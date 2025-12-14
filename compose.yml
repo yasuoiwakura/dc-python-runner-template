@@ -1,0 +1,21 @@
+services:
+  python-cli:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        DEBUGPY: "true"  # only for remote debug
+    # container_name: name-com
+    restart: unless-stopped
+    environment:
+      PYTHON_KWARG_PROJEKT123_VAR1: "123"
+      PYTHON_KWARG_PROJEKT123_SECRET2: ${PYTHON_KWARG_PROJEKT123_SECRET2}
+      PYTHON_KWARG_PROJEKT123_PYTHONUNBUFFERED: 1
+      PYTHON_KWARG_PROJEKT123_DEBUGPY: False
+      # DEBUGPY_WAIT: "true"  # only for remote debug
+    volumes:
+      - ./app:/app:ro
+      - ./in:/in:ro
+      - ./out:/out
+    ports:
+      - 127.0.0.1:5678:5678 # python debugging - NEVER EXPOSE TO INTERNET!!!
